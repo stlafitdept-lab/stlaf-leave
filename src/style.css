@@ -153,44 +153,18 @@
 
     .login-brand-name {
         font-family: "Georgia", "Times New Roman", serif;
-        font-size: clamp(3.2rem, 7vw, 4.8rem);
+        font-size: clamp(2.7rem, 6vw, 4.4rem);
         font-weight: 700;
         color: var(--white);
-        letter-spacing: -0.01em;
+        letter-spacing: 0.05em;
         line-height: 1;
         text-align: center;
         text-transform: uppercase;
-        margin-bottom: 5px;
+        text-shadow: 0 8px 18px rgba(0,0,0,0.18);
     }
 
-    .login-brand-name span, .stlaf-logo span {
-        display: inline;
-    }
-
-    .stlaf-st {
-        color: #ffffff !important;
-        text-shadow: 
-            0.012em 0.012em 0 var(--gold),
-            0.024em 0.024em 0 var(--gold),
-            0.036em 0.036em 0 var(--gold),
-            0.048em 0.048em 0 var(--gold),
-            0.06em 0.06em 0 var(--gold),
-            0.072em 0.072em 0 var(--gold),
-            0.084em 0.084em 0 var(--gold),
-            0.1em 0.1em 20px rgba(0,0,0,0.5);
-    }
-
-    .stlaf-laf {
-        color: var(--gold) !important;
-        text-shadow: 
-            0.012em 0.012em 0 var(--gold-3),
-            0.024em 0.024em 0 var(--gold-3),
-            0.036em 0.036em 0 var(--gold-3),
-            0.048em 0.048em 0 var(--gold-3),
-            0.06em 0.06em 0 var(--gold-3),
-            0.072em 0.072em 0 var(--gold-3),
-            0.084em 0.084em 0 var(--gold-3),
-            0.1em 0.1em 20px rgba(0,0,0,0.5);
+    .login-brand-name span {
+        display: inline-block;
     }
 
     .login-brand-sub {
