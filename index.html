@@ -20,7 +20,8 @@
 
 <body class="text-slate-800">
     <div id="login-page" class="min-h-screen flex flex-col items-center justify-center p-4">
-        <h1 class="login-brand-name"> <span>ST</span><span class="gold-text">LAF</span> </h1>
+        <h1 class="login-brand-name"><span>S</span><span class="brand-t">T</span><span
+                class="brand-l gold-text">L</span><span class="gold-text">AF</span></h1>
         <p class="login-brand-sub">LEAVE AND OVERTIME SYSTEM</p>
         <div class="card p-10 w-full max-w-md shadow-2xl bg-transparent border-2 border-white/50 rounded-xl">
             <h2 class="text-center text-2xl font-bold mb-6 text-black">LOG IN</h2>
@@ -43,8 +44,14 @@
     </div>
     <div id="dashboard-container" class="hidden h-screen flex flex-col bg-[#f8f5f0]">
         <nav class="bg-[#1e293b] text-white p-4 flex justify-between items-center flex-none font-serif">
-            <h2 class="font-bold text-[25px] uppercase tracking-wider text-white"> ST<span class="gold-text">LAF</span>
-                - <span id="portal-name" class="text-[15px] text-white">PORTAL</span> </h2>
+            <h2 class="font-bold text-[25px] uppercase tracking-wider text-white">
+                <a href="#" onclick="window.location.reload(); return false;"
+                    class="cursor-pointer hover:opacity-85 transition-opacity">
+                    <span>S</span><span class="brand-t">T</span><span class="brand-l gold-text">L</span><span
+                        class="gold-text">AF</span>
+                </a>
+                - <span id="portal-name" class="text-[15px] text-white">PORTAL</span>
+            </h2>
             <div class="flex items-center gap-4">
                 <div class="flex flex-col items-end leading-tight"> <span id="user-display-name"
                         class="font-bold text-white text-base"></span> <span id="user-display-position"

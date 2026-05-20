@@ -41,7 +41,9 @@
     RESET & BASE
     ========================================== */
 
-    *, *::before, *::after {
+    *,
+    *::before,
+    *::after {
         box-sizing: border-box;
         margin: 0;
         padding: 0;
@@ -56,10 +58,10 @@
         min-height: 100vh !important;
         color: var(--text) !important;
         font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont,
-                    "Segoe UI", sans-serif !important;
+            "Segoe UI", sans-serif !important;
         background:
-            radial-gradient(circle at 15% 20%, rgba(197,160,33,0.18), transparent 25%),
-            radial-gradient(circle at 85% 80%, rgba(59,130,246,0.10), transparent 30%),
+            radial-gradient(circle at 15% 20%, rgba(197, 160, 33, 0.18), transparent 25%),
+            radial-gradient(circle at 85% 80%, rgba(59, 130, 246, 0.10), transparent 30%),
             linear-gradient(135deg, #0f1722 0%, #1a2634 45%, #243447 75%, #c5a021 100%) !important;
         line-height: 1.5;
         -webkit-font-smoothing: antialiased;
@@ -75,9 +77,9 @@
         pointer-events: none;
         z-index: -1;
         background:
-            radial-gradient(circle at 12% 18%, rgba(197,160,33,0.13), transparent 18%),
-            radial-gradient(circle at 84% 16%, rgba(26,38,52,0.08), transparent 16%),
-            radial-gradient(circle at 78% 82%, rgba(59,130,246,0.06), transparent 18%);
+            radial-gradient(circle at 12% 18%, rgba(197, 160, 33, 0.13), transparent 18%),
+            radial-gradient(circle at 84% 16%, rgba(26, 38, 52, 0.08), transparent 16%),
+            radial-gradient(circle at 78% 82%, rgba(59, 130, 246, 0.06), transparent 18%);
     }
 
     body::after {
@@ -86,7 +88,7 @@
         inset: 0;
         pointer-events: none;
         z-index: -2;
-        background: linear-gradient(180deg, rgba(255,255,255,0.20), rgba(255,255,255,0));
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.20), rgba(255, 255, 255, 0));
     }
 
     /* ==========================================
@@ -96,7 +98,7 @@
     .gold-bg {
         background: linear-gradient(135deg, var(--gold-2) 0%, var(--gold) 45%, var(--gold-3) 100%) !important;
         color: var(--navy) !important;
-        box-shadow: 0 12px 28px rgba(197,160,33,0.26);
+        box-shadow: 0 12px 28px rgba(197, 160, 33, 0.26);
     }
 
     .gold-text {
@@ -116,7 +118,7 @@
         isolation: isolate;
         overflow: hidden;
         background:
-            radial-gradient(circle at top, rgba(255,255,255,0.12), transparent 10%),
+            radial-gradient(circle at top, rgba(255, 255, 255, 0.12), transparent 10%),
             linear-gradient(160deg, #31405C 10%, #31405C 30%, #BAAD7B 100%) !important;
     }
 
@@ -136,7 +138,7 @@
         height: 26rem;
         left: -8rem;
         top: -8rem;
-        background: radial-gradient(circle, rgba(197,160,33,0.20), transparent 68%);
+        background: radial-gradient(circle, rgba(197, 160, 33, 0.20), transparent 68%);
     }
 
     #login-page::after {
@@ -144,7 +146,7 @@
         height: 24rem;
         right: -7rem;
         bottom: -8rem;
-        background: radial-gradient(circle, rgba(59,130,246,0.12), transparent 68%);
+        background: radial-gradient(circle, rgba(59, 130, 246, 0.12), transparent 68%);
     }
 
     /* ==========================================
@@ -160,16 +162,30 @@
         line-height: 1;
         text-align: center;
         text-transform: uppercase;
-        text-shadow: 0 8px 18px rgba(0,0,0,0.18);
+        text-shadow: 0 8px 18px rgba(0, 0, 0, 0.18);
     }
 
     .login-brand-name span {
         display: inline-block;
     }
 
+    .brand-t {
+        display: inline-block;
+        position: relative;
+        z-index: 2;
+        margin-right: -0.45em;
+        /* Adjust to control the overlap amount */
+    }
+
+    .brand-l {
+        display: inline-block;
+        position: relative;
+        z-index: 1;
+    }
+
     .login-brand-sub {
         font-family: "Georgia", "Times New Roman", serif;
-        color: rgba(215,221,232,0.9);
+        color: rgba(215, 221, 232, 0.9);
         font-size: 0.86rem;
         font-weight: 600;
         letter-spacing: 0.36em;
@@ -181,8 +197,8 @@
 
     /* Login card */
     #login-page .card {
-        background: rgba(255,255,255,0.20) !important;
-        border: 1.5px solid rgba(255,255,255,0.22) !important;
+        background: rgba(255, 255, 255, 0.20) !important;
+        border: 1.5px solid rgba(255, 255, 255, 0.22) !important;
         backdrop-filter: blur(20px);
         border-radius: var(--radius-xl) !important;
         box-shadow: var(--shadow-xl);
@@ -191,8 +207,8 @@
 
     #login-page .card:hover {
         transform: translateY(-4px);
-        box-shadow: 0 40px 90px rgba(15,23,42,0.28);
-        border-color: rgba(197,160,33,0.32) !important;
+        box-shadow: 0 40px 90px rgba(15, 23, 42, 0.28);
+        border-color: rgba(197, 160, 33, 0.32) !important;
     }
 
     #login-page .card h2 {
@@ -202,7 +218,7 @@
 
     /* Login form inputs */
     #login-page label {
-        color: rgba(215,221,232,0.85) !important;
+        color: rgba(215, 221, 232, 0.85) !important;
         font-size: 10px;
         font-weight: 700;
         letter-spacing: 0.18em;
@@ -211,8 +227,8 @@
 
     #login-page select,
     #login-page input {
-        background: rgba(255,255,255,0.10) !important;
-        border: 1.5px solid rgba(255,255,255,0.20) !important;
+        background: rgba(255, 255, 255, 0.10) !important;
+        border: 1.5px solid rgba(255, 255, 255, 0.20) !important;
         color: #ffffff !important;
         border-radius: 10px !important;
         font-size: 13px;
@@ -230,12 +246,12 @@
     #login-page input:focus {
         outline: none !important;
         border-color: var(--gold) !important;
-        background: rgba(255,255,255,0.14) !important;
-        box-shadow: 0 0 0 3px rgba(197,160,33,0.18) !important;
+        background: rgba(255, 255, 255, 0.14) !important;
+        box-shadow: 0 0 0 3px rgba(197, 160, 33, 0.18) !important;
     }
 
     #login-page input::placeholder {
-        color: rgba(255,255,255,0.38) !important;
+        color: rgba(255, 255, 255, 0.38) !important;
     }
 
     /* ==========================================
@@ -243,38 +259,38 @@
     ========================================== */
 
     #dashboard-container {
-    position: relative;
+        position: relative;
         isolation: isolate;
         overflow: hidden;
         background:
-            radial-gradient(circle at top, rgba(255,255,255,0.12), transparent 10%),
+            radial-gradient(circle at top, rgba(255, 255, 255, 0.12), transparent 10%),
             linear-gradient(160deg, #8296bb 10%, #3e5279 30%, #e6d69a 100%) !important;
-}
+    }
 
-#dashboard-container nav {
-    background: 
-        linear-gradient(145deg, rgba(12,20,35,0.94) 0%, rgba(25,40,60,0.95) 30%, 
-                        rgba(20,35,55,0.94) 70%, rgba(22,38,58,0.93) 100%),
-        linear-gradient(135deg, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.08) 50%, 
-                        rgba(255,220,160,0.12) 100%),
-        linear-gradient(90deg, rgba(255,255,255,0.18) 25%, transparent 50%, 
-                        rgba(255,255,255,0.18) 75%),
-        linear-gradient(45deg, rgba(255,215,140,0.08) 0%, transparent 70%);
-    border-bottom: 1px solid rgba(255,255,255,0.42);
-    border-image: linear-gradient(90deg, transparent 20%, rgba(255,220,160,0.6) 50%, transparent 80%) 1;
-    box-shadow: 
-        0 20px 60px rgba(12,20,35,0.65),
-        0 8px 32px rgba(255,215,140,0.25),
-        0 0 80px rgba(255,255,255,0.08),
-        inset 0 2px 0 rgba(255,255,255,0.35),
-        inset 0 -2px 0 rgba(255,220,160,0.20),
-        inset 0 0 40px rgba(255,255,255,0.06);
-    backdrop-filter: blur(50px) saturate(160%) brightness(110%) contrast(1.05);
-}
+    #dashboard-container nav {
+        background:
+            linear-gradient(145deg, rgba(12, 20, 35, 0.94) 0%, rgba(25, 40, 60, 0.95) 30%,
+                rgba(20, 35, 55, 0.94) 70%, rgba(22, 38, 58, 0.93) 100%),
+            linear-gradient(135deg, rgba(255, 255, 255, 0.22) 0%, rgba(255, 255, 255, 0.08) 50%,
+                rgba(255, 220, 160, 0.12) 100%),
+            linear-gradient(90deg, rgba(255, 255, 255, 0.18) 25%, transparent 50%,
+                rgba(255, 255, 255, 0.18) 75%),
+            linear-gradient(45deg, rgba(255, 215, 140, 0.08) 0%, transparent 70%);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.42);
+        border-image: linear-gradient(90deg, transparent 20%, rgba(255, 220, 160, 0.6) 50%, transparent 80%) 1;
+        box-shadow:
+            0 20px 60px rgba(12, 20, 35, 0.65),
+            0 8px 32px rgba(255, 215, 140, 0.25),
+            0 0 80px rgba(255, 255, 255, 0.08),
+            inset 0 2px 0 rgba(255, 255, 255, 0.35),
+            inset 0 -2px 0 rgba(255, 220, 160, 0.20),
+            inset 0 0 40px rgba(255, 255, 255, 0.06);
+        backdrop-filter: blur(50px) saturate(160%) brightness(110%) contrast(1.05);
+    }
 
     #dashboard-container main {
         background:
-            radial-gradient(circle at top right, rgba(255,255,255,0.45), transparent 20%),
+            radial-gradient(circle at top right, rgba(255, 255, 255, 0.45), transparent 20%),
             transparent;
     }
 
@@ -291,8 +307,8 @@
     .card,
     .login-box,
     .stat-card {
-        background: rgba(255,255,255,0.92) !important;
-        border: 1px solid rgba(148,163,184,0.14);
+        background: rgba(255, 255, 255, 0.92) !important;
+        border: 1px solid rgba(148, 163, 184, 0.14);
         box-shadow: var(--shadow-md);
         backdrop-filter: blur(16px);
     }
@@ -300,10 +316,10 @@
     /* Form modal overlay + panel */
     #form-container {
         backdrop-filter: blur(8px);
-        background: rgba(0,0,0,0.55) !important;
+        background: rgba(0, 0, 0, 0.55) !important;
     }
 
-    #form-container > div {
+    #form-container>div {
         background: #f8f5f0 !important;
         border-radius: 28px !important;
         border-top: 8px solid var(--gold) !important;
@@ -319,7 +335,7 @@
         font-weight: 800;
         letter-spacing: -0.02em;
         color: var(--navy);
-        border-bottom: 1px solid rgba(148,163,184,0.2);
+        border-bottom: 1px solid rgba(148, 163, 184, 0.2);
         padding-bottom: 12px;
         margin-bottom: 20px;
     }
@@ -327,10 +343,10 @@
     /* Custom popup */
     #custom-popup {
         backdrop-filter: blur(8px);
-        background: rgba(0,0,0,0.55) !important;
+        background: rgba(0, 0, 0, 0.55) !important;
     }
 
-    #custom-popup > div {
+    #custom-popup>div {
         background: #ffffff !important;
         border-radius: 24px !important;
         border-top: 6px solid var(--gold) !important;
@@ -341,8 +357,15 @@
     }
 
     @keyframes popupIn {
-        from { opacity: 0; transform: scale(0.93) translateY(10px); }
-        to   { opacity: 1; transform: scale(1) translateY(0); }
+        from {
+            opacity: 0;
+            transform: scale(0.93) translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
     }
 
     #popup-title {
@@ -362,7 +385,12 @@
     TYPOGRAPHY
     ========================================== */
 
-    h1, h2, h3, h4, h5, h6 {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
         color: var(--text);
         line-height: 1.15;
         letter-spacing: -0.02em;
@@ -390,7 +418,7 @@
     #login-form-fields select,
     #login-form-fields textarea {
         width: 100%;
-        border: 1.5px solid rgba(148,163,184,0.30);
+        border: 1.5px solid rgba(148, 163, 184, 0.30);
         border-radius: 10px;
         padding: 9px 13px;
         font-size: 13px;
@@ -407,7 +435,7 @@
     #login-form-fields input:focus,
     #login-form-fields select:focus {
         border-color: var(--gold) !important;
-        box-shadow: 0 0 0 3px rgba(197,160,33,0.14) !important;
+        box-shadow: 0 0 0 3px rgba(197, 160, 33, 0.14) !important;
     }
 
     #form-fields textarea {
@@ -428,13 +456,13 @@
     /* Role select on login page */
     #role-select {
         width: 100%;
-        border: 1.5px solid rgba(255,255,255,0.22) !important;
+        border: 1.5px solid rgba(255, 255, 255, 0.22) !important;
         border-radius: 10px;
         padding: 10px 36px 10px 14px;
         font-size: 13px;
         font-family: inherit;
         color: #ffffff !important;
-        background: rgba(255,255,255,0.10) !important;
+        background: rgba(255, 255, 255, 0.10) !important;
         appearance: none;
         background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") !important;
         background-repeat: no-repeat !important;
@@ -446,7 +474,7 @@
     #role-select:focus {
         outline: none;
         border-color: var(--gold) !important;
-        box-shadow: 0 0 0 3px rgba(197,160,33,0.18) !important;
+        box-shadow: 0 0 0 3px rgba(197, 160, 33, 0.18) !important;
     }
 
     #role-select option {
@@ -482,14 +510,14 @@
     button,
     .btn {
         transition: transform 180ms ease, box-shadow 180ms ease,
-                    background-color 180ms ease, color 180ms ease,
-                    border-color 180ms ease;
+            background-color 180ms ease, color 180ms ease,
+            border-color 180ms ease;
         cursor: pointer;
     }
 
     button:focus-visible,
     .btn:focus-visible {
-        outline: 3px solid rgba(197,160,33,0.32);
+        outline: 3px solid rgba(197, 160, 33, 0.32);
         outline-offset: 2px;
     }
 
@@ -502,7 +530,10 @@
         box-shadow: var(--shadow-sm);
     }
 
-    .btn:hover { transform: translateY(-1px); box-shadow: var(--shadow-md); }
+    .btn:hover {
+        transform: translateY(-1px);
+        box-shadow: var(--shadow-md);
+    }
 
     .btn-primary {
         background: linear-gradient(135deg, var(--gold-2), var(--gold));
@@ -520,14 +551,24 @@
     }
 
     .btn-outline {
-        background: rgba(255,255,255,0.72);
+        background: rgba(255, 255, 255, 0.72);
         color: var(--navy);
-        border: 1px solid rgba(197,160,33,0.34);
+        border: 1px solid rgba(197, 160, 33, 0.34);
     }
 
-    .btn-full  { width: 100%; }
-    .btn-sm    { padding: 6px 12px; font-size: 11px; }
-    .btn-lg    { padding: 12px 18px; font-size: 15px; }
+    .btn-full {
+        width: 100%;
+    }
+
+    .btn-sm {
+        padding: 6px 12px;
+        font-size: 11px;
+    }
+
+    .btn-lg {
+        padding: 12px 18px;
+        font-size: 15px;
+    }
 
     /* Logout button */
     .btn-logout {
@@ -544,10 +585,10 @@
     }
 
     .btn-logout:hover {
-        background: rgba(197,160,33,0.12);
+        background: rgba(197, 160, 33, 0.12);
         color: #ffffff;
         transform: translateY(-1px);
-        box-shadow: 0 10px 24px rgba(197,160,33,0.14);
+        box-shadow: 0 10px 24px rgba(197, 160, 33, 0.14);
     }
 
     /* Primary action buttons */
@@ -555,13 +596,13 @@
     #submit-form-btn,
     button[onclick*="window.openForm"],
     button[onclick*="window.openEmployeeForm"] {
-        box-shadow: 0 12px 28px rgba(197,160,33,0.24);
+        box-shadow: 0 12px 28px rgba(197, 160, 33, 0.24);
     }
 
     #submit-form-btn:hover,
     #login-btn:hover {
         transform: translateY(-1px);
-        box-shadow: 0 16px 34px rgba(197,160,33,0.32);
+        box-shadow: 0 16px 34px rgba(197, 160, 33, 0.32);
     }
 
     /* Table action buttons */
@@ -586,7 +627,7 @@
     }
 
     .edit-btn:hover {
-        box-shadow: 0 10px 22px rgba(59,130,246,0.28);
+        box-shadow: 0 10px 22px rgba(59, 130, 246, 0.28);
         transform: translateY(-1px);
     }
 
@@ -596,7 +637,7 @@
     }
 
     .delete-btn:hover {
-        box-shadow: 0 10px 22px rgba(239,68,68,0.26);
+        box-shadow: 0 10px 22px rgba(239, 68, 68, 0.26);
         transform: translateY(-1px);
     }
 
@@ -606,7 +647,7 @@
     }
 
     .approve-btn:hover {
-        box-shadow: 0 10px 22px rgba(34,197,94,0.26);
+        box-shadow: 0 10px 22px rgba(34, 197, 94, 0.26);
         transform: translateY(-1px);
     }
 
@@ -616,7 +657,7 @@
     }
 
     .reject-btn:hover {
-        box-shadow: 0 10px 22px rgba(239,68,68,0.26);
+        box-shadow: 0 10px 22px rgba(239, 68, 68, 0.26);
         transform: translateY(-1px);
     }
 
@@ -630,7 +671,7 @@
     /* View / picker / nav buttons */
     .view-btn {
         background: #f4f6f8;
-        border: 1px solid rgba(148,163,184,0.35);
+        border: 1px solid rgba(148, 163, 184, 0.35);
         padding: 6px 10px;
         border-radius: 10px;
         font-size: 12px;
@@ -673,13 +714,13 @@
 
     .date-nav-btn:hover {
         color: var(--gold);
-        background: rgba(197,160,33,0.08);
+        background: rgba(197, 160, 33, 0.08);
     }
 
     .time-btn,
     .ampm-btn {
         border: 1px solid var(--cream-3);
-        background: rgba(255,255,255,0.94);
+        background: rgba(255, 255, 255, 0.94);
         transition: background 160ms ease, color 160ms ease, border-color 160ms ease;
     }
 
@@ -725,42 +766,50 @@
     /* Pending */
     .status-pending,
     .badge-pending {
-        background: rgba(245,158,11,0.12);
+        background: rgba(245, 158, 11, 0.12);
         color: #92400e;
-        border: 1px solid rgba(245,158,11,0.28);
+        border: 1px solid rgba(245, 158, 11, 0.28);
     }
 
-    .status-pending::before { background: var(--warning); }
+    .status-pending::before {
+        background: var(--warning);
+    }
 
     /* Approved */
     .status-approved,
     .badge-approved {
-        background: rgba(34,197,94,0.10);
+        background: rgba(34, 197, 94, 0.10);
         color: #166534;
-        border: 1px solid rgba(34,197,94,0.24);
+        border: 1px solid rgba(34, 197, 94, 0.24);
     }
 
-    .status-approved::before { background: var(--success); }
+    .status-approved::before {
+        background: var(--success);
+    }
 
     /* Rejected */
     .status-rejected,
     .badge-rejected {
-        background: rgba(239,68,68,0.10);
+        background: rgba(239, 68, 68, 0.10);
         color: #991b1b;
-        border: 1px solid rgba(239,68,68,0.22);
+        border: 1px solid rgba(239, 68, 68, 0.22);
     }
 
-    .status-rejected::before { background: var(--danger); }
+    .status-rejected::before {
+        background: var(--danger);
+    }
 
     /* Cancelled */
     .status-cancelled,
     .badge-cancelled {
-        background: rgba(148,163,184,0.12);
+        background: rgba(148, 163, 184, 0.12);
         color: #475569;
-        border: 1px solid rgba(148,163,184,0.26);
+        border: 1px solid rgba(148, 163, 184, 0.26);
     }
 
-    .status-cancelled::before { background: var(--muted-2); }
+    .status-cancelled::before {
+        background: var(--muted-2);
+    }
 
     /* ==========================================
     TABLES
@@ -772,8 +821,8 @@
         overflow-y: hidden;
         -webkit-overflow-scrolling: touch;
         border-radius: 16px;
-        border: 1px solid rgba(148,163,184,0.14);
-        background: rgba(255,255,255,0.95);
+        border: 1px solid rgba(148, 163, 184, 0.14);
+        background: rgba(255, 255, 255, 0.95);
         box-shadow: var(--shadow-sm);
     }
 
@@ -797,7 +846,7 @@
         letter-spacing: 0.18em;
         text-transform: uppercase;
         color: var(--muted);
-        border-bottom: 1.5px solid rgba(148,163,184,0.15);
+        border-bottom: 1.5px solid rgba(148, 163, 184, 0.15);
         white-space: nowrap;
     }
 
@@ -806,12 +855,12 @@
     }
 
     #dashboard-container tbody tr:hover {
-        background: rgba(197,160,33,0.04);
+        background: rgba(197, 160, 33, 0.04);
     }
 
     #dashboard-container tbody td {
         padding: 13px 16px;
-        border-bottom: 1px solid rgba(148,163,184,0.10);
+        border-bottom: 1px solid rgba(148, 163, 184, 0.10);
         vertical-align: middle;
         color: var(--navy);
         font-size: 13px;
@@ -856,8 +905,8 @@
 
     .stat-card:hover {
         transform: translateY(-3px);
-        box-shadow: 0 18px 44px rgba(15,23,42,0.12);
-        border-color: rgba(197,160,33,0.14);
+        box-shadow: 0 18px 44px rgba(15, 23, 42, 0.12);
+        border-color: rgba(197, 160, 33, 0.14);
     }
 
     /* ==========================================
@@ -865,33 +914,33 @@
     ========================================== */
 
     .custom-scrollbar::-webkit-scrollbar,
-    #form-container > div::-webkit-scrollbar {
+    #form-container>div::-webkit-scrollbar {
         width: 5px;
         height: 5px;
     }
 
     .custom-scrollbar::-webkit-scrollbar-track,
-    #form-container > div::-webkit-scrollbar-track {
+    #form-container>div::-webkit-scrollbar-track {
         background: transparent;
         border-radius: 10px;
     }
 
     .custom-scrollbar::-webkit-scrollbar-thumb,
-    #form-container > div::-webkit-scrollbar-thumb {
-        background: rgba(197,160,33,0.35);
+    #form-container>div::-webkit-scrollbar-thumb {
+        background: rgba(197, 160, 33, 0.35);
         border-radius: 10px;
     }
 
     .custom-scrollbar::-webkit-scrollbar-thumb:hover,
-    #form-container > div::-webkit-scrollbar-thumb:hover {
-        background: rgba(197,160,33,0.60);
+    #form-container>div::-webkit-scrollbar-thumb:hover {
+        background: rgba(197, 160, 33, 0.60);
     }
 
     /* Firefox */
     .custom-scrollbar,
-    #form-container > div {
+    #form-container>div {
         scrollbar-width: thin;
-        scrollbar-color: rgba(197,160,33,0.35) transparent;
+        scrollbar-color: rgba(197, 160, 33, 0.35) transparent;
     }
 
     /* ==========================================
@@ -904,7 +953,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        box-shadow: 0 2px 18px rgba(0,0,0,0.18);
+        box-shadow: 0 2px 18px rgba(0, 0, 0, 0.18);
         flex-wrap: wrap;
         gap: 12px;
     }
@@ -916,10 +965,12 @@
         letter-spacing: -0.02em;
     }
 
-    .header-logo span { color: var(--gold); }
+    .header-logo span {
+        color: var(--gold);
+    }
 
     .header-title {
-        color: rgba(215,221,232,0.82);
+        color: rgba(215, 221, 232, 0.82);
         font-size: 13px;
         letter-spacing: 0.28em;
         margin-left: 14px;
@@ -980,8 +1031,15 @@
     ========================================== */
 
     @keyframes fadeInUp {
-        from { opacity: 0; transform: translateY(16px); }
-        to   { opacity: 1; transform: translateY(0); }
+        from {
+            opacity: 0;
+            transform: translateY(16px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 
     .animate-in {
@@ -1022,7 +1080,7 @@
             padding: 10px 12px;
         }
 
-        #form-container > div {
+        #form-container>div {
             width: 94vw;
             max-height: calc(100vh - 24px);
             padding: 20px 18px !important;
@@ -1043,7 +1101,7 @@
             padding: 28px 20px !important;
         }
 
-        #custom-popup > div {
+        #custom-popup>div {
             width: 94vw;
             padding: 22px 18px !important;
         }

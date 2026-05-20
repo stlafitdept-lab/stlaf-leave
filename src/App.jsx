@@ -4,6 +4,7 @@ import viteLogo from './assets/vite.svg'
 import heroImg from './assets/hero.png'
 import './App.css'
 import * as XLSX from 'xlsx'
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 // FIREBASE IMPORTS
 import { collection, addDoc } from "firebase/firestore";
