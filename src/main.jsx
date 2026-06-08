@@ -3,6 +3,8 @@
 // ==========================================
 const API_BASE_URL = 'https://stlaf-api.onrender.com';
 
+window.dashboardRecords = window.dashboardRecords || {};
+
 if (typeof window.showPopup === "undefined") {
   window.showPopup = function ({ title, message, type }) {
     alert(`${title}: ${message}`);
@@ -391,14 +393,20 @@ window.refreshEmployeeData = async () => {
       if (isUsers) {
         const displayID = item.id_number || item.username || 'N/A';
 
+        if (item && item.id) {
+          window.dashboardRecords[`user_${item.id}`] = item;
+        }
+
         return `
-          <tr class="border-b border-slate-50 hover:bg-slate-50/50 transition group">
-            <td class="py-3 px-4 font-bold text-slate-700 text-[13px]">${displayID}</td>
-            <td class="py-3 px-4 font-bold text-slate-700 text-[13px]">${item.name || 'N/A'}</td>
-            <td class="py-3 px-4 text-slate-500 text-[13px]">${item.department || 'N/A'}</td>
-            <td class="py-3 px-4 text-slate-500 text-[13px]">${item.position || 'N/A'}</td>
-            <td class="py-3 px-4">
-              <span class="px-2 py-0.5 rounded-full text-[10px] font-black uppercase bg-emerald-100 text-emerald-600 tracking-wider">Active</span>
+          <tr class="border-b border-slate-50 hover:bg-slate-50/50 transition group" data-record-key="user_${item.id}">
+            <td class="clickable-td py-3 px-4 font-bold text-slate-700 text-[13px]"><div>${displayID}</div></td>
+            <td class="clickable-td py-3 px-4 font-bold text-slate-700 text-[13px]"><div>${item.name || 'N/A'}</div></td>
+            <td class="clickable-td py-3 px-4 text-slate-500 text-[13px]"><div>${item.department || 'N/A'}</div></td>
+            <td class="clickable-td py-3 px-4 text-slate-500 text-[13px]"><div>${item.position || 'N/A'}</div></td>
+            <td class="clickable-td py-3 px-4">
+              <div>
+                <span class="px-2 py-0.5 rounded-full text-[10px] font-black uppercase bg-emerald-100 text-emerald-600 tracking-wider">Active</span>
+              </div>
             </td>
             <td class="py-3 px-4">
               <div class="flex items-center justify-center gap-1">
@@ -451,33 +459,42 @@ window.refreshEmployeeData = async () => {
       const rej = getRej(item);
       const rejCell = (hasRejectReasonCol && isRejected(statusLabel)) ? (rej || '—') : '—';
 
-      return `
-        <tr class="border-b border-slate-50 hover:bg-slate-50/50 transition">
-          <td class="py-3 px-4 font-bold text-slate-700 text-[13px]">${item.employeeName || item.name || 'N/A'}</td>
-          <td class="py-3 px-4 text-slate-500 text-[13px]">${item.department || 'N/A'}</td>
-          <td class="py-3 px-4 text-slate-500 text-[13px]">${item.position || 'N/A'}</td>
+      const recordType = isLeaves ? 'leave' : (isOT ? 'ot' : 'ob');
+      if (item && item.id) {
+        window.dashboardRecords[`${recordType}_${item.id}`] = { ...item, _requestType: recordType };
+      }
 
-          <td class="py-3 px-4 text-slate-600 font-medium text-[13px]">
-            <div>${typeVal}</div>
-            ${payBadge}
+      return `
+        <tr class="border-b border-slate-50 hover:bg-slate-50/50 transition" data-record-key="${recordType}_${item.id}">
+          <td class="clickable-td py-3 px-4 font-bold text-slate-700 text-[13px]"><div>${item.employeeName || item.name || 'N/A'}</div></td>
+          <td class="clickable-td py-3 px-4 text-slate-500 text-[13px]"><div>${item.department || 'N/A'}</div></td>
+          <td class="clickable-td py-3 px-4 text-slate-500 text-[13px]"><div>${item.position || 'N/A'}</div></td>
+
+          <td class="clickable-td py-3 px-4 text-slate-600 font-medium text-[13px]">
+            <div>
+              <div>${typeVal}</div>
+              ${payBadge}
+            </div>
           </td>
 
-          <td class="py-3 px-4 text-slate-400 text-[13px]">${periodVal}</td>
+          <td class="clickable-td py-3 px-4 text-slate-400 text-[13px]"><div>${periodVal}</div></td>
 
-          <td class="py-3 px-4 text-slate-500 text-[13px] max-w-[220px] truncate" title="${reasonVal}">
-            ${reasonVal}
+          <td class="clickable-td py-3 px-4 text-slate-500 text-[13px] max-w-[220px] truncate" title="${reasonVal}">
+            <div>${reasonVal}</div>
           </td>
 
           ${hasRejectReasonCol ? `
-            <td class="py-3 px-4 text-slate-500 text-[13px] max-w-[220px] truncate" title="${rejCell}">
-              ${rejCell}
+            <td class="clickable-td py-3 px-4 text-slate-500 text-[13px] max-w-[220px] truncate" title="${rejCell}">
+              <div>${rejCell}</div>
             </td>
           ` : ``}
 
-          <td class="py-3 px-4 text-center">
-            <span class="${getStatusStyle(statusLabel)}">
-              ${(statusLabel).toUpperCase()}
-            </span>
+          <td class="clickable-td py-3 px-4 text-center">
+            <div>
+              <span class="${getStatusStyle(statusLabel)}">
+                ${(statusLabel).toUpperCase()}
+              </span>
+            </div>
           </td>
         </tr>
       `;
@@ -1315,21 +1332,26 @@ window.renderApproverTable = (data, type) => {
     // ✅ Only computed/used in history
     const rejCell = (isHistory && isRejected(statusVal)) ? (getRej(item) || "—") : "—";
 
+    const recordType = type.toLowerCase().includes('ot') ? 'ot' : 'leave';
+    if (item && item.id) {
+      window.dashboardRecords[`${recordType}_${item.id}`] = { ...item, _requestType: recordType };
+    }
+
     if (isOT) {
       const date = item.ot_date || "N/A";
       const hrs = item.hours || "0";
 
       return `
-        <tr class="border-b border-slate-50 hover:bg-slate-50 transition text-sm">
-          <td class="py-4 px-4 font-bold text-slate-700">${safeText(name)}</td>
-          <td class="py-4 px-4">${safeText(category)}</td>
-          <td class="py-4 px-4 text-xs">${safeText(date)}</td>
-          <td class="py-4 px-4 text-xs font-bold text-amber-600">${safeText(hrs)} hrs</td>
-          <td class="py-4 px-4 text-slate-500 max-w-[220px] truncate" title="${safeText(reason)}">"${safeText(reason)}"</td>
+        <tr class="border-b border-slate-50 hover:bg-slate-50 transition text-sm" data-record-key="${recordType}_${item.id}">
+          <td class="clickable-td py-4 px-4 font-bold text-slate-700"><div>${safeText(name)}</div></td>
+          <td class="clickable-td py-4 px-4"><div>${safeText(category)}</div></td>
+          <td class="clickable-td py-4 px-4 text-xs"><div>${safeText(date)}</div></td>
+          <td class="clickable-td py-4 px-4 text-xs font-bold text-amber-600"><div>${safeText(hrs)} hrs</div></td>
+          <td class="clickable-td py-4 px-4 text-slate-500 max-w-[220px] truncate" title="${safeText(reason)}"><div>"${safeText(reason)}"</div></td>
 
           ${isHistory ? `
-            <td class="py-4 px-4 text-slate-500 max-w-[220px] truncate" title="${safeText(rejCell)}">
-              ${safeText(rejCell)}
+            <td class="clickable-td py-4 px-4 text-slate-500 max-w-[220px] truncate" title="${safeText(rejCell)}">
+              <div>${safeText(rejCell)}</div>
             </td>
           ` : ``}
 
@@ -1355,18 +1377,20 @@ window.renderApproverTable = (data, type) => {
     `;
 
     return `
-      <tr class="border-b border-slate-50 hover:bg-slate-50 transition text-sm">
-        <td class="py-4 px-4 font-bold text-slate-700">${safeText(name)}</td>
-        <td class="py-4 px-4">
-          <div class="font-medium">${safeText(category)}</div>
-          ${payStatusBadge}
+      <tr class="border-b border-slate-50 hover:bg-slate-50 transition text-sm" data-record-key="${recordType}_${item.id}">
+        <td class="clickable-td py-4 px-4 font-bold text-slate-700"><div>${safeText(name)}</div></td>
+        <td class="clickable-td py-4 px-4">
+          <div>
+            <div class="font-medium">${safeText(category)}</div>
+            ${payStatusBadge}
+          </div>
         </td>
-        <td class="py-4 px-4 text-xs">${safeText(dateRange)}</td>
-        <td class="py-4 px-4 text-slate-500 max-w-[220px] truncate" title="${safeText(reason)}">"${safeText(reason)}"</td>
+        <td class="clickable-td py-4 px-4 text-xs"><div>${safeText(dateRange)}</div></td>
+        <td class="clickable-td py-4 px-4 text-slate-500 max-w-[220px] truncate" title="${safeText(reason)}"><div>"${safeText(reason)}"</div></td>
 
         ${isHistory ? `
-          <td class="py-4 px-4 text-slate-500 max-w-[220px] truncate" title="${safeText(rejCell)}">
-            ${safeText(rejCell)}
+          <td class="clickable-td py-4 px-4 text-slate-500 max-w-[220px] truncate" title="${safeText(rejCell)}">
+            <div>${safeText(rejCell)}</div>
           </td>
         ` : ``}
 
@@ -2287,35 +2311,43 @@ const renderLeaveRow = (leave) => {
   const isRejected = status.toLowerCase() === 'rejected';
   const rejectionReason = getRejectedReason(leave);
 
+  if (leave && leave.id) {
+    window.dashboardRecords[`leave_${leave.id}`] = leave;
+  }
+
   return `
-    <tr class="border-b border-slate-50 hover:bg-slate-50/80 transition-all group">
-        <td class="py-4 px-4 font-medium text-slate-800">
-            <div class="font-bold">${leave.leave_type || 'N/A'}</div>
-            <div class="mt-1">
-                <span class="text-[9px] px-2 py-1 rounded-full font-bold uppercase tracking-wider ${(leave.pay_status || '').toLowerCase() === 'paid'
+    <tr class="border-b border-slate-50 hover:bg-slate-50/80 transition-all group" data-record-key="leave_${leave.id}">
+        <td class="clickable-td py-4 px-4 font-medium text-slate-800">
+            <div>
+                <div class="font-bold">${leave.leave_type || 'N/A'}</div>
+                <div class="mt-1">
+                    <span class="text-[9px] px-2 py-1 rounded-full font-bold uppercase tracking-wider ${(leave.pay_status || '').toLowerCase() === 'paid'
       ? 'bg-emerald-100 text-emerald-700 border border-emerald-200'
       : 'bg-orange-100 text-orange-700 border border-orange-200'
     }">
-                    ${leave.pay_status?.toUpperCase() || 'UNPAID'}
+                        ${leave.pay_status?.toUpperCase() || 'UNPAID'}
+                    </span>
+                </div>
+            </div>
+        </td>
+        <td class="clickable-td py-4 px-4 text-sm text-slate-700 font-medium"><div>${leave.start_date || '—'}</div></td>
+        <td class="clickable-td py-4 px-4 text-sm text-slate-700 font-medium"><div>${leave.end_date || '—'}</div></td>
+        <td class="clickable-td py-4 px-4 text-sm text-slate-600 max-w-[180px] truncate" title="${leave.reason || ''}">
+            <div>${leave.reason || 'No reason provided'}</div>
+        </td>
+        <td class="clickable-td py-4 px-4 text-sm text-slate-600 max-w-[180px] truncate" title="${rejectionReason}">
+            <div>${isRejected ? (rejectionReason || '—') : '—'}</div>
+        </td>
+        <td class="clickable-td py-4 px-4 text-center">
+            <div>
+                <span class="${getStatusStyle(status)}">
+                    ${status.toUpperCase()}
                 </span>
             </div>
         </td>
-        <td class="py-4 px-4 text-sm text-slate-700 font-medium">${leave.start_date || '—'}</td>
-        <td class="py-4 px-4 text-sm text-slate-700 font-medium">${leave.end_date || '—'}</td>
-        <td class="py-4 px-4 text-sm text-slate-600 max-w-[180px] truncate" title="${leave.reason || ''}">
-            ${leave.reason || 'No reason provided'}
-        </td>
-        <td class="py-4 px-4 text-sm text-slate-600 max-w-[180px] truncate" title="${rejectionReason}">
-        ${isRejected ? (rejectionReason || '—') : '—'}
-      </td>
-                <td class="py-4 px-4 text-center">
-            <span class="${getStatusStyle(status)}">
-                ${status.toUpperCase()}
-            </span>
-        </td>
         <td class="py-4 px-4 text-center">
-  ${renderEmployeeActionCell(leave, 'leave')}
-</td>
+            ${renderEmployeeActionCell(leave, 'leave')}
+        </td>
     </tr>
     `;
 };
@@ -2325,26 +2357,32 @@ const renderOTRow = (ot) => {
   const isRejected = status.toLowerCase() === 'rejected';
   const rejectionReason = getRejectedReason(ot);
 
+  if (ot && ot.id) {
+    window.dashboardRecords[`ot_${ot.id}`] = ot;
+  }
+
   return `
-    <tr class="border-b border-slate-50 hover:bg-slate-50/80 transition-all group">
-        <td class="py-4 px-4 text-sm text-slate-700 font-medium">${ot.ot_date || '—'}</td>
-        <td class="py-4 px-4">
-            <span class="text-amber-600 font-medium text-sm ">${ot.hours || '0'}h</span>
+    <tr class="border-b border-slate-50 hover:bg-slate-50/80 transition-all group" data-record-key="ot_${ot.id}">
+        <td class="clickable-td py-4 px-4 text-sm text-slate-700 font-medium"><div>${ot.ot_date || '—'}</div></td>
+        <td class="clickable-td py-4 px-4">
+            <div><span class="text-amber-600 font-medium text-sm ">${ot.hours || '0'}h</span></div>
         </td>
-        <td class="py-4 px-4 text-sm text-slate-600 max-w-[180px] truncate" title="${ot.reason || ot.task_description || ''}">
-            ${ot.reason || ot.task_description || 'No description'}
+        <td class="clickable-td py-4 px-4 text-sm text-slate-600 max-w-[180px] truncate" title="${ot.reason || ot.task_description || ''}">
+            <div>${ot.reason || ot.task_description || 'No description'}</div>
         </td>
-        <td class="py-4 px-4 text-sm text-slate-600 max-w-[180px] truncate" title="${rejectionReason}">
-  ${isRejected ? (rejectionReason || '—') : '—'}
-</td>
-                <td class="py-4 px-4 text-center">
-            <span class="${getStatusStyle(status)}">
-                ${status.toUpperCase()}
-            </span>
+        <td class="clickable-td py-4 px-4 text-sm text-slate-600 max-w-[180px] truncate" title="${rejectionReason}">
+            <div>${isRejected ? (rejectionReason || '—') : '—'}</div>
+        </td>
+        <td class="clickable-td py-4 px-4 text-center">
+            <div>
+                <span class="${getStatusStyle(status)}">
+                    ${status.toUpperCase()}
+                </span>
+            </div>
         </td>
         <td class="py-4 px-4 text-center">
-  ${renderEmployeeActionCell(ot, 'ot')}
-</td>
+            ${renderEmployeeActionCell(ot, 'ot')}
+        </td>
     </tr>
     `;
 };
@@ -2354,46 +2392,59 @@ const renderUTRow = (ut) => {
   const isRejected = status.toLowerCase() === 'rejected';
   const rejectionReason = getRejectedReason(ut);
 
-  return `
-    <tr class="border-b border-slate-50 hover:bg-slate-50/80 transition-all group">
-        <td class="py-4 px-4 font-bold text-slate-800">${ut.leave_type || 'Undertime'}</td>
-        <td class="py-4 px-4 text-sm text-slate-700 font-medium">${ut.start_date || '—'}</td>
-        <td class="py-4 px-4 text-sm text-slate-700">${formatTime(ut.from_time)}</td>
-        <td class="py-4 px-4 text-sm text-slate-700">${formatTime(ut.to_time)}</td>
-        <td class="py-4 px-4 text-sm text-slate-600 max-w-[150px] truncate" title="${ut.reason || ''}">
-            ${ut.reason || 'No reason'}
-        </td>
-        <td class="py-4 px-4 text-sm text-slate-600 max-w-[180px] truncate" title="${rejectionReason}">
-  ${isRejected ? (rejectionReason || '—') : '—'}
-</td>
+  if (ut && ut.id) {
+    window.dashboardRecords[`ut_${ut.id}`] = ut;
+  }
 
-                <td class="py-4 px-4 text-center">
-            <span class="${getStatusStyle(status)}">
-                ${status.toUpperCase()}
-            </span>
+  return `
+    <tr class="border-b border-slate-50 hover:bg-slate-50/80 transition-all group" data-record-key="ut_${ut.id}">
+        <td class="clickable-td py-4 px-4 font-bold text-slate-800"><div>${ut.leave_type || 'Undertime'}</div></td>
+        <td class="clickable-td py-4 px-4 text-sm text-slate-700 font-medium"><div>${ut.start_date || '—'}</div></td>
+        <td class="clickable-td py-4 px-4 text-sm text-slate-700"><div>${formatTime(ut.from_time)}</div></td>
+        <td class="clickable-td py-4 px-4 text-sm text-slate-700"><div>${formatTime(ut.to_time)}</div></td>
+        <td class="clickable-td py-4 px-4 text-sm text-slate-600 max-w-[150px] truncate" title="${ut.reason || ''}">
+            <div>${ut.reason || 'No reason'}</div>
+        </td>
+        <td class="clickable-td py-4 px-4 text-sm text-slate-600 max-w-[180px] truncate" title="${rejectionReason}">
+            <div>${isRejected ? (rejectionReason || '—') : '—'}</div>
+        </td>
+        <td class="clickable-td py-4 px-4 text-center">
+            <div>
+                <span class="${getStatusStyle(status)}">
+                    ${status.toUpperCase()}
+                </span>
+            </div>
         </td>
         <td class="py-4 px-4 text-center">
-  ${renderEmployeeActionCell(ut, 'ut')}
-</td>
+            ${renderEmployeeActionCell(ut, 'ut')}
+        </td>
     </tr>
     `;
 };
 
-const renderOBRow = (ob) => `
-  <tr class="border-b border-slate-50 hover:bg-slate-50/80 transition-all group">
-    <td class="py-4 px-4 font-medium text-slate-800 max-w-[200px] truncate" title="${(ob.purpose || 'No purpose').trim().toLowerCase().replace(/^./, (c) => c.toUpperCase())}">
-      ${(ob.purpose || 'No purpose').trim().toLowerCase().replace(/^./, (c) => c.toUpperCase())}
+const renderOBRow = (ob) => {
+  if (ob && ob.id) {
+    window.dashboardRecords[`ob_${ob.id}`] = ob;
+  }
+
+  return `
+  <tr class="border-b border-slate-50 hover:bg-slate-50/80 transition-all group" data-record-key="ob_${ob.id}">
+    <td class="clickable-td py-4 px-4 font-medium text-slate-800 max-w-[200px] truncate" title="${(ob.purpose || 'No purpose').trim().toLowerCase().replace(/^./, (c) => c.toUpperCase())}">
+      <div>${(ob.purpose || 'No purpose').trim().toLowerCase().replace(/^./, (c) => c.toUpperCase())}</div>
     </td>
-    <td class="py-4 px-4 text-sm text-slate-700 font-medium">${ob.date || '—'}</td>
-    <td class="py-4 px-4 text-sm text-slate-700">${formatTime(ob.time_in)}</td>
-    <td class="py-4 px-4 text-sm text-slate-700">${formatTime(ob.time_out)}</td>
-        <td class="py-4 px-4 text-center">
-      <span class="${getStatusStyle(ob.status || 'Recorded')}">
-        ${(ob.status || 'Recorded').toUpperCase()}
-      </span>
+    <td class="clickable-td py-4 px-4 text-sm text-slate-700 font-medium"><div>${ob.date || '—'}</div></td>
+    <td class="clickable-td py-4 px-4 text-sm text-slate-700"><div>${formatTime(ob.time_in)}</div></td>
+    <td class="clickable-td py-4 px-4 text-sm text-slate-700"><div>${formatTime(ob.time_out)}</div></td>
+    <td class="clickable-td py-4 px-4 text-center">
+      <div>
+        <span class="${getStatusStyle(ob.status || 'Recorded')}">
+          ${(ob.status || 'Recorded').toUpperCase()}
+        </span>
+      </div>
     </td> 
   </tr>
-`;
+  `;
+};
 
 
 window.renderActionButtons = (id, category) => {
@@ -2772,3 +2823,255 @@ window.populateFormFields = (type, data) => {
     container.dataset.editType = type;
   }
 };
+
+// ==========================================
+// 15. CLICKABLE TD DETAIL MODAL LOGIC
+// ==========================================
+window.showRecordDetails = (recordKey) => {
+  const data = window.dashboardRecords[recordKey];
+  if (!data) return;
+
+  const currentRole = (localStorage.getItem("logged_user_role") || "").toLowerCase();
+
+  // Let's determine the type of the record based on the key prefix
+  let type = '';
+  if (recordKey.startsWith('leave_')) type = 'leave';
+  else if (recordKey.startsWith('ot_')) type = 'ot';
+  else if (recordKey.startsWith('ob_')) type = 'ob';
+  else if (recordKey.startsWith('user_')) type = 'user';
+
+  if (type === 'user') {
+    Swal.fire({
+      title: '<span class="text-slate-800 text-lg font-bold uppercase tracking-wider">EMPLOYEE DETAILS</span>',
+      html: `
+        <div class="text-left space-y-3 mt-4 text-slate-600 text-sm">
+          <div class="grid grid-cols-3 border-b border-slate-100 pb-2">
+            <span class="font-bold text-slate-400 text-xs uppercase">ID Number</span>
+            <span class="col-span-2 text-slate-800 font-bold">${data.id_number || data.username || 'N/A'}</span>
+          </div>
+          <div class="grid grid-cols-3 border-b border-slate-100 pb-2">
+            <span class="font-bold text-slate-400 text-xs uppercase">Full Name</span>
+            <span class="col-span-2 text-slate-800 font-bold">${data.name || 'N/A'}</span>
+          </div>
+          <div class="grid grid-cols-3 border-b border-slate-100 pb-2">
+            <span class="font-bold text-slate-400 text-xs uppercase">Department</span>
+            <span class="col-span-2 text-slate-800">${data.department || 'N/A'}</span>
+          </div>
+          <div class="grid grid-cols-3 border-b border-slate-100 pb-2">
+            <span class="font-bold text-slate-400 text-xs uppercase">Position</span>
+            <span class="col-span-2 text-slate-800">${data.position || 'N/A'}</span>
+          </div>
+          <div class="grid grid-cols-3 border-b border-slate-100 pb-2">
+            <span class="font-bold text-slate-400 text-xs uppercase">Role</span>
+            <span class="col-span-2"><span class="px-2 py-0.5 rounded-full text-[10px] font-black uppercase bg-amber-100 text-amber-700 tracking-wider">${data.role || 'Employee'}</span></span>
+          </div>
+        </div>
+      `,
+      showCancelButton: true,
+      cancelButtonText: 'CLOSE',
+      confirmButtonText: 'EDIT MEMBER',
+      confirmButtonColor: '#c5a021',
+      cancelButtonColor: '#f1f5f9',
+      customClass: {
+        popup: 'rounded-2xl border-t-[6px] border-[#c5a021] shadow-2xl p-6',
+        confirmButton: 'px-6 py-2.5 rounded-lg font-black text-[11px] tracking-[0.2em] shadow-lg shadow-[#c5a021]/20',
+        cancelButton: 'px-6 py-2.5 rounded-lg font-black text-[11px] tracking-[0.2em] border border-slate-200 text-slate-500'
+      },
+      showConfirmButton: (currentRole === 'admin' || currentRole === 'superadmin'),
+      reverseButtons: true,
+    }).then((res) => {
+      if (res.isConfirmed) {
+        window.handleEditUser(data);
+      }
+    });
+    return;
+  }
+
+  // Mapped/Formatted values
+  let title = '';
+  let detailsHtml = '';
+
+  const status = data.status || (type === 'ob' ? 'Recorded' : 'Pending');
+  const badgeStyle = getStatusStyle(status);
+
+  if (type === 'leave') {
+    title = 'LEAVE REQUEST';
+    const duration = getLeaveDurationDays(data.start_date, data.end_date);
+    const dateRange = (data.start_date && data.end_date)
+      ? `${data.start_date} to ${data.end_date}`
+      : (data.start_date || 'N/A');
+
+    const durationText = duration > 0 ? ` (${duration} ${duration === 1 ? 'day' : 'days'})` : '';
+
+    detailsHtml = `
+      <div class="grid grid-cols-3 border-b border-slate-100 pb-2">
+        <span class="font-bold text-slate-400 text-xs uppercase">Leave Type</span>
+        <span class="col-span-2 text-slate-800 font-bold">${data.leave_type || 'N/A'}</span>
+      </div>
+      <div class="grid grid-cols-3 border-b border-slate-100 pb-2">
+        <span class="font-bold text-slate-400 text-xs uppercase">Pay Status</span>
+        <span class="col-span-2">
+          <span class="text-[10px] px-2 py-0.5 rounded-md font-black uppercase ${
+            (data.pay_status || 'Paid') === 'Paid'
+              ? 'bg-emerald-100 text-emerald-700 border border-emerald-200'
+              : 'bg-orange-100 text-orange-700 border border-orange-200'
+          }">
+            ${(data.pay_status || 'Paid').toUpperCase()}
+          </span>
+        </span>
+      </div>
+      <div class="grid grid-cols-3 border-b border-slate-100 pb-2">
+        <span class="font-bold text-slate-400 text-xs uppercase">Period</span>
+        <span class="col-span-2 text-slate-800">${dateRange}${durationText}</span>
+      </div>
+      ${(data.leave_type === 'Undertime' || data.leave_type === 'Halfday') && (data.from_time || data.to_time) ? `
+      <div class="grid grid-cols-3 border-b border-slate-100 pb-2">
+        <span class="font-bold text-slate-400 text-xs uppercase">Time</span>
+        <span class="col-span-2 text-slate-800">${formatTime(data.from_time)} to ${formatTime(data.to_time)}</span>
+      </div>
+      ` : ''}
+    `;
+  } else if (type === 'ot') {
+    title = 'OVERTIME REQUEST';
+    detailsHtml = `
+      <div class="grid grid-cols-3 border-b border-slate-100 pb-2">
+        <span class="font-bold text-slate-400 text-xs uppercase">OT Date</span>
+        <span class="col-span-2 text-slate-800 font-bold">${data.ot_date || 'N/A'}</span>
+      </div>
+      <div class="grid grid-cols-3 border-b border-slate-100 pb-2">
+        <span class="font-bold text-slate-400 text-xs uppercase">Hours</span>
+        <span class="col-span-2 text-amber-600 font-bold">${data.hours || '0'} hrs</span>
+      </div>
+    `;
+  } else if (type === 'ob') {
+    title = 'OFFICIAL BUSINESS';
+    detailsHtml = `
+      <div class="grid grid-cols-3 border-b border-slate-100 pb-2">
+        <span class="font-bold text-slate-400 text-xs uppercase">Date</span>
+        <span class="col-span-2 text-slate-800 font-bold">${data.date || 'N/A'}</span>
+      </div>
+      <div class="grid grid-cols-3 border-b border-slate-100 pb-2">
+        <span class="font-bold text-slate-400 text-xs uppercase">Purpose</span>
+        <span class="col-span-2 text-slate-800 font-bold">${data.purpose || 'N/A'}</span>
+      </div>
+      <div class="grid grid-cols-3 border-b border-slate-100 pb-2">
+        <span class="font-bold text-slate-400 text-xs uppercase">Time In/Out</span>
+        <span class="col-span-2 text-slate-800">${formatTime(data.time_in)} - ${formatTime(data.time_out)}</span>
+      </div>
+    `;
+  }
+
+  // Common details
+  const empName = data.employeeName || data.name || data.employee_name || 'N/A';
+  const dept = data.department || 'N/A';
+  const pos = data.position || 'N/A';
+  const reason = data.reason || data.task_description || data.purpose || 'No description provided';
+  const rejectReason = getRejectedReason(data);
+
+  const isPending = status.toLowerCase() === 'pending';
+  const isRejected = status.toLowerCase() === 'rejected';
+
+  // Determine actions
+  let showApproverActions = (currentRole === 'approver') && isPending;
+  let showEmployeeActions = (currentRole === 'employee') && isPending && (type !== 'ob');
+
+  let popupBorderColor = '#c5a021';
+  if (status.toLowerCase() === 'approved') popupBorderColor = '#10b981';
+  if (isRejected) popupBorderColor = '#ef4444';
+
+  Swal.fire({
+    title: `<span class="text-slate-800 text-lg font-bold uppercase tracking-wider">${title} DETAILS</span>`,
+    html: `
+      <div class="text-left space-y-3 mt-4 text-slate-600 text-sm">
+        <div class="grid grid-cols-3 border-b border-slate-100 pb-2">
+          <span class="font-bold text-slate-400 text-xs uppercase">Employee</span>
+          <span class="col-span-2 text-slate-800 font-bold">${empName}</span>
+        </div>
+        ${dept !== 'N/A' || pos !== 'N/A' ? `
+        <div class="grid grid-cols-3 border-b border-slate-100 pb-2">
+          <span class="font-bold text-slate-400 text-xs uppercase">Dept / Pos</span>
+          <span class="col-span-2 text-slate-700">${dept} ${pos !== 'N/A' ? `/ ${pos}` : ''}</span>
+        </div>
+        ` : ''}
+        
+        ${detailsHtml}
+
+        <div class="grid grid-cols-3 border-b border-slate-100 pb-2">
+          <span class="font-bold text-slate-400 text-xs uppercase">Reason</span>
+          <span class="col-span-2 text-slate-700 break-words leading-relaxed">"${reason}"</span>
+        </div>
+
+        ${isRejected && rejectReason ? `
+        <div class="grid grid-cols-3 border-b border-red-50 pb-2 bg-red-50/50 p-2 rounded-xl">
+          <span class="font-bold text-red-500 text-xs uppercase">Rejection Reason</span>
+          <span class="col-span-2 text-red-700 font-semibold break-words leading-relaxed">"${rejectReason}"</span>
+        </div>
+        ` : ''}
+
+        <div class="grid grid-cols-3 pt-2">
+          <span class="font-bold text-slate-400 text-xs uppercase">Status</span>
+          <span class="col-span-2">
+            <span class="${badgeStyle}">
+              ${status.toUpperCase()}
+            </span>
+          </span>
+        </div>
+      </div>
+    `,
+    showDenyButton: showApproverActions || showEmployeeActions,
+    showConfirmButton: showApproverActions || showEmployeeActions,
+    showCancelButton: true,
+    confirmButtonText: showApproverActions ? 'APPROVE' : 'EDIT',
+    denyButtonText: showApproverActions ? 'REJECT' : 'DELETE',
+    cancelButtonText: 'CLOSE',
+    confirmButtonColor: showApproverActions ? '#10b981' : '#3b82f6',
+    denyButtonColor: '#ef4444',
+    cancelButtonColor: '#f1f5f9',
+    reverseButtons: true,
+    customClass: {
+      popup: 'rounded-2xl shadow-2xl p-6',
+      confirmButton: 'px-5 py-2.5 rounded-lg font-black text-[11px] tracking-[0.15em] uppercase shadow-md',
+      denyButton: 'px-5 py-2.5 rounded-lg font-black text-[11px] tracking-[0.15em] uppercase shadow-md text-white',
+      cancelButton: 'px-5 py-2.5 rounded-lg font-black text-[11px] tracking-[0.15em] uppercase border border-slate-200 text-slate-500'
+    },
+    didOpen: (popup) => {
+      popup.style.borderTop = `6px solid ${popupBorderColor}`;
+    }
+  }).then((res) => {
+    if (res.isConfirmed) {
+      if (showApproverActions) {
+        const activeTab = document.querySelector('#approver-layout button[id^="tab-pending-"], #approver-layout button[id^="tab-all-"]')?.id?.replace('tab-', '') || 'pending-leave';
+        window.updateStatus(data.id, 'Approved', activeTab);
+      } else if (showEmployeeActions) {
+        window.handleEditRequest(data.id, type);
+      }
+    } else if (res.isDenied) {
+      if (showApproverActions) {
+        const activeTab = document.querySelector('#approver-layout button[id^="tab-pending-"], #approver-layout button[id^="tab-all-"]')?.id?.replace('tab-', '') || 'pending-leave';
+        window.updateStatus(data.id, 'Rejected', activeTab);
+      } else if (showEmployeeActions) {
+        window.handleDeleteRequest(data.id, type);
+      }
+    }
+  });
+};
+
+// Event delegation for table cell clicks
+document.addEventListener('click', (e) => {
+  const cell = e.target.closest('.clickable-td');
+  if (!cell) return;
+
+  // Exclude actual interactive elements inside the cell
+  if (e.target.closest('button') || e.target.closest('a') || e.target.closest('input') || e.target.closest('svg')) {
+    return;
+  }
+
+  const row = cell.closest('tr');
+  if (!row) return;
+
+  const recordKey = row.dataset.recordKey;
+  if (recordKey) {
+    window.showRecordDetails(recordKey);
+  }
+});
+

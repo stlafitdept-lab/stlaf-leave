@@ -1,0 +1,18 @@
+{
+  "name": "stlaf-notification-server",
+  "version": "1.0.0",
+  "description": "Express server for managing Web Push subscriptions and notifications for STLAF",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "mysql2": "^3.9.7",
+    "web-push": "^3.6.7"
+  }
+}

@@ -1117,3 +1117,24 @@
             gap: 4px;
         }
     }
+
+    /* ==========================================
+    INTERACTIVE TABLE CELLS (CLICKABLE TD)
+    ========================================== */
+    .clickable-td {
+        cursor: pointer !important;
+        position: relative;
+        transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .clickable-td:hover {
+        background-color: rgba(197, 160, 33, 0.08) !important;
+    }
+
+    .clickable-td > * {
+        transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .clickable-td:active > * {
+        transform: scale(0.96);
+    }
