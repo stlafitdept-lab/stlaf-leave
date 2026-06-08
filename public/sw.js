@@ -1,5 +1,5 @@
 // public/sw.js
-self.addEventListener('push', function(event) {
+self.addEventListener('push', function (event) {
   const data = event.data ? event.data.json() : {};
   const title = data.title || 'Notification';
   const options = {
@@ -16,7 +16,7 @@ self.addEventListener('push', function(event) {
   event.waitUntil(self.registration.showNotification(title, options));
 });
 
-self.addEventListener('notificationclick', function(event) {
+self.addEventListener('notificationclick', function (event) {
   event.notification.close();
   const clickData = event.notification.data;
   const action = event.action; // if user clicked an action button

@@ -1059,7 +1059,7 @@ window.openEmployeeForm = (mode, employeeData = null) => {
 
   const depts = [
     "CCT",
-    "KST",
+    "KCS",
     "DCP",
     "IT Department",
     "Human Resources Department",
@@ -1879,7 +1879,7 @@ window.updateLoginFields = function () {
       >
         <option value="" >Select Department</option>
         <option value="CCT">CCT</option>
-        <option value="KST">KST</option>
+        <option value="KCS">KCS</option>
         <option value="DCP">DCP</option>
         <option value="IT Department">IT Department</option>
         <option value="Human Resources Department">Human Resources Department</option>
