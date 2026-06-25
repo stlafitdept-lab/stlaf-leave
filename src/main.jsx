@@ -1,3 +1,9 @@
+/* File: main.jsx
+Author: Iya
+Date: 2026-08-25
+Purpose: Houses the core frontend runtime dashboard application script, 
+handling user interactions, dynamic tables, and API fetch calls.*/
+
 // ==========================================
 // 1. CONFIGURATION & GLOBALS
 // ==========================================
@@ -2911,11 +2917,10 @@ window.showRecordDetails = (recordKey) => {
       <div class="grid grid-cols-3 border-b border-slate-100 pb-2">
         <span class="font-bold text-slate-400 text-xs uppercase">Pay Status</span>
         <span class="col-span-2">
-          <span class="text-[10px] px-2 py-0.5 rounded-md font-black uppercase ${
-            (data.pay_status || 'Paid') === 'Paid'
-              ? 'bg-emerald-100 text-emerald-700 border border-emerald-200'
-              : 'bg-orange-100 text-orange-700 border border-orange-200'
-          }">
+          <span class="text-[10px] px-2 py-0.5 rounded-md font-black uppercase ${(data.pay_status || 'Paid') === 'Paid'
+        ? 'bg-emerald-100 text-emerald-700 border border-emerald-200'
+        : 'bg-orange-100 text-orange-700 border border-orange-200'
+      }">
             ${(data.pay_status || 'Paid').toUpperCase()}
           </span>
         </span>

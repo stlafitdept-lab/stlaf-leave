@@ -1,3 +1,10 @@
+/**
+ * file: eslint.config.js
+ * author: Iya
+ * date: June 25, 2026
+ * purpose: Defines static linting rules to enforce code style consistency and detect programming flaws across JavaScript and React layouts.
+ */
+
 import js from '@eslint/js'
 import globals from 'globals'
 import reactHooks from 'eslint-plugin-react-hooks'

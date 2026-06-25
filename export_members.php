@@ -1,9 +1,10 @@
 <?php
-// ============================================================
-// export_members.php
-// Exports the full employee/member roster as CSV.
-// Passwords are NEVER included.
-// ============================================================
+/**
+ * file: export_members.php
+ * author: Iya
+ * date: June 25, 2026
+ * purpose: Collects the complete active employee registry roster from the database system and outputs it cleanly into a secure, downloadable CSV dataset.
+ */
 
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, OPTIONS');

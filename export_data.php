@@ -1,4 +1,10 @@
 <?php
+/**
+ * file: export_data.php
+ * author: Iya
+ * date: June 25, 2026
+ * purpose: Authenticates database connections and exports structured category tables filtered by date intervals.
+ */
 include 'cors.php';
 include 'db_config.php';
 

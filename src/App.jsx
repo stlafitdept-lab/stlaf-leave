@@ -1,3 +1,9 @@
+/* File: App.jsx
+Author: Iya
+Date: 2026-08-25
+Purpose: Acts as the primary React landing view component, 
+showcasing template counter metrics and database connection saves.*/
+
 import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'

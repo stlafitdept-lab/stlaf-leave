@@ -1,8 +1,10 @@
 <?php
-// ============================================================
-// export_requests.php
-// Exports last 3 months of Leave, Overtime, and OB requests.
-// ============================================================
+/**
+ * File: export_requests.php
+ * Author: Iya
+ * Date: June 25, 2026
+ * Purpose: Exports last 3 months of Leave, Overtime, and OB requests.
+ */
 
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, OPTIONS');
