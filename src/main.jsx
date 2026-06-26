@@ -7,7 +7,7 @@ handling user interactions, dynamic tables, and API fetch calls.*/
 // ==========================================
 // 1. CONFIGURATION & GLOBALS
 // ==========================================
-const API_BASE_URL = 'https://stlaf-api-1.onrender.com';
+const API_BASE_URL = 'https://stlaf-api.onrender.com';
 
 window.dashboardRecords = window.dashboardRecords || {};
 
@@ -1944,8 +1944,7 @@ window.updateLoginFields = function () {
   container.innerHTML = fieldsHTML + passwordField;
 };
 
-// 1. Ideklara ito bilang isang normal na async function para hindi magreklamo ang Vercel
-async function handleLogin(event) {
+window.handleLogin = async function (event) {
   // Prevent form reload
   event?.preventDefault?.();
 
@@ -2009,6 +2008,7 @@ async function handleLogin(event) {
       }),
     });
 
+    // Get the raw text first (to catch PHP errors that aren't JSON)
     const rawText = await response.text();
     console.log("RAW RESPONSE FROM SERVER:", rawText);
 
@@ -2016,13 +2016,15 @@ async function handleLogin(event) {
     try {
       result = JSON.parse(rawText);
     } catch (e) {
-      throw new Error("Server sent an invalid response format.");
+      throw new Error("Server sent an invalid response. Check Render logs.");
     }
 
     // ===== 6. HANDLE RESPONSE =====
     if (result.success) {
+      // Login Successful
       const user = result.user || {};
 
+      // Save to LocalStorage
       localStorage.setItem("logged_user_id", user.id_number || "");
       localStorage.setItem("logged_user_name", user.name || "");
       localStorage.setItem("logged_user_role", user.role || role);
@@ -2035,17 +2037,16 @@ async function handleLogin(event) {
         type: "success",
       });
 
+      // Redirect or Reload after a short delay
       setTimeout(() => {
         location.reload();
       }, 1000);
-      
-      return; 
     }
 
     // ===== FAILED =====
     showPopup({
       title: "Login Failed",
-      message: result.message || "Invalid login credentials.",
+      message: result.message || "Invalid login.",
       type: "danger",
     });
 
@@ -2053,28 +2054,24 @@ async function handleLogin(event) {
       loginBtn.disabled = false;
       loginBtn.innerHTML = oldText || "LOG IN";
     }
-
   } catch (err) {
     // ===== 7. HANDLE NETWORK/SERVER ERRORS =====
     console.error("handleLogin error:", err);
 
     showPopup({
       title: "Connection Error",
-      message: "Could not connect to the server. Please ensure your backend is awake and try again.",
+      message: "Could not connect to the server. Please try again later.",
       type: "danger",
     });
 
+    // Reset Button
     if (loginBtn) {
       loginBtn.disabled = false;
       loginBtn.innerHTML = oldText || "LOG IN";
     }
-  }
-}
+  };
+};
 
-// 2. Pagkatapos ng function block, ligtas mo na itong maia-assign sa window global wrapper nang walang error sa compile!
-if (typeof window !== "undefined") {
-  window.handleLogin = handleLogin;
-}
 
 // ==========================================
 // VERIFY FUNCTIONS LOADED
