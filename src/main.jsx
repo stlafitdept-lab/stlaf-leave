@@ -2008,7 +2008,7 @@ window.handleLogin = async function (event) {
       }),
     });
 
-    // Get the raw text first (to catch PHP errors that aren't JSON)
+    // Get the raw text first (to catch PHP errors safely)
     const rawText = await response.text();
     console.log("RAW RESPONSE FROM SERVER:", rawText);
 
@@ -2016,7 +2016,7 @@ window.handleLogin = async function (event) {
     try {
       result = JSON.parse(rawText);
     } catch (e) {
-      throw new Error("Server sent an invalid response. Check Render logs.");
+      throw new Error("Server sent an invalid response format.");
     }
 
     // ===== 6. HANDLE RESPONSE =====
@@ -2041,12 +2041,14 @@ window.handleLogin = async function (event) {
       setTimeout(() => {
         location.reload();
       }, 1000);
+      
+      return; // Stop execution here so it doesn't drop down to Failed
     }
 
     // ===== FAILED =====
     showPopup({
       title: "Login Failed",
-      message: result.message || "Invalid login.",
+      message: result.message || "Invalid login credentials.",
       type: "danger",
     });
 
@@ -2054,13 +2056,14 @@ window.handleLogin = async function (event) {
       loginBtn.disabled = false;
       loginBtn.innerHTML = oldText || "LOG IN";
     }
+
   } catch (err) {
     // ===== 7. HANDLE NETWORK/SERVER ERRORS =====
     console.error("handleLogin error:", err);
 
     showPopup({
       title: "Connection Error",
-      message: "Could not connect to the server. Please try again later.",
+      message: "Could not connect to the server. Please ensure your backend is awake and try again.",
       type: "danger",
     });
 
@@ -2069,9 +2072,8 @@ window.handleLogin = async function (event) {
       loginBtn.disabled = false;
       loginBtn.innerHTML = oldText || "LOG IN";
     }
-  };
+  }
 };
-
 
 // ==========================================
 // VERIFY FUNCTIONS LOADED
