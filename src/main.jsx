@@ -3079,4 +3079,3 @@ document.addEventListener('click', (e) => {
     window.showRecordDetails(recordKey);
   }
 });
-
