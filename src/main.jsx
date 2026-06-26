@@ -1944,7 +1944,8 @@ window.updateLoginFields = function () {
   container.innerHTML = fieldsHTML + passwordField;
 };
 
-window.handleLogin = async function (event) {
+// 1. Ideklara ito bilang isang normal na async function para hindi magreklamo ang Vercel
+async function handleLogin(event) {
   // Prevent form reload
   event?.preventDefault?.();
 
@@ -2008,7 +2009,6 @@ window.handleLogin = async function (event) {
       }),
     });
 
-    // Get raw text response safely
     const rawText = await response.text();
     console.log("RAW RESPONSE FROM SERVER:", rawText);
 
@@ -2023,7 +2023,6 @@ window.handleLogin = async function (event) {
     if (result.success) {
       const user = result.user || {};
 
-      // Save credentials context metadata cleanly
       localStorage.setItem("logged_user_id", user.id_number || "");
       localStorage.setItem("logged_user_name", user.name || "");
       localStorage.setItem("logged_user_role", user.role || role);
@@ -2036,7 +2035,6 @@ window.handleLogin = async function (event) {
         type: "success",
       });
 
-      // Reload window context view gracefully
       setTimeout(() => {
         location.reload();
       }, 1000);
@@ -2071,23 +2069,12 @@ window.handleLogin = async function (event) {
       loginBtn.innerHTML = oldText || "LOG IN";
     }
   }
-};
-    // ===== 7. HANDLE NETWORK/SERVER ERRORS =====
-    console.error("handleLogin error:", err);
+}
 
-    showPopup({
-      title: "Connection Error",
-      message: "Could not connect to the server. Please ensure your backend is awake and try again.",
-      type: "danger",
-    });
-
-    // Reset Button
-    if (loginBtn) {
-      loginBtn.disabled = false;
-      loginBtn.innerHTML = oldText || "LOG IN";
-    }
-  }
-};
+// 2. Pagkatapos ng function block, ligtas mo na itong maia-assign sa window global wrapper nang walang error sa compile!
+if (typeof window !== "undefined") {
+  window.handleLogin = handleLogin;
+}
 
 // ==========================================
 // VERIFY FUNCTIONS LOADED
