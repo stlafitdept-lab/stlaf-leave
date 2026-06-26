@@ -7,7 +7,7 @@ handling user interactions, dynamic tables, and API fetch calls.*/
 // ==========================================
 // 1. CONFIGURATION & GLOBALS
 // ==========================================
-const API_BASE_URL = 'https://stlaf-api.onrender.com';
+const API_BASE_URL = 'https://stlaf-api-1.onrender.com';
 
 window.dashboardRecords = window.dashboardRecords || {};
 
