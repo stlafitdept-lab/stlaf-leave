@@ -2008,7 +2008,7 @@ window.handleLogin = async function (event) {
       }),
     });
 
-    // Get the raw text first (to catch PHP errors safely)
+    // Get raw text response safely
     const rawText = await response.text();
     console.log("RAW RESPONSE FROM SERVER:", rawText);
 
@@ -2021,10 +2021,9 @@ window.handleLogin = async function (event) {
 
     // ===== 6. HANDLE RESPONSE =====
     if (result.success) {
-      // Login Successful
       const user = result.user || {};
 
-      // Save to LocalStorage
+      // Save credentials context metadata cleanly
       localStorage.setItem("logged_user_id", user.id_number || "");
       localStorage.setItem("logged_user_name", user.name || "");
       localStorage.setItem("logged_user_role", user.role || role);
@@ -2037,12 +2036,12 @@ window.handleLogin = async function (event) {
         type: "success",
       });
 
-      // Redirect or Reload after a short delay
+      // Reload window context view gracefully
       setTimeout(() => {
         location.reload();
       }, 1000);
       
-      return; // Stop execution here so it doesn't drop down to Failed
+      return; 
     }
 
     // ===== FAILED =====
@@ -2058,6 +2057,21 @@ window.handleLogin = async function (event) {
     }
 
   } catch (err) {
+    // ===== 7. HANDLE NETWORK/SERVER ERRORS =====
+    console.error("handleLogin error:", err);
+
+    showPopup({
+      title: "Connection Error",
+      message: "Could not connect to the server. Please ensure your backend is awake and try again.",
+      type: "danger",
+    });
+
+    if (loginBtn) {
+      loginBtn.disabled = false;
+      loginBtn.innerHTML = oldText || "LOG IN";
+    }
+  }
+};
     // ===== 7. HANDLE NETWORK/SERVER ERRORS =====
     console.error("handleLogin error:", err);
 
